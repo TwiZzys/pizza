@@ -2,9 +2,12 @@
 
 .sort {
   position: relative;
+
   &__label {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
 
     svg {
       margin-right: 8px;
@@ -34,6 +37,7 @@
 
     ul {
       overflow: hidden;
+
       li {
         padding: 12px 20px;
         cursor: pointer;
