@@ -1,14 +1,37 @@
 import {useState} from "react";
 
-const Sort = () => {
+const Sort = ({value, onChangeSort}) => {
 
     const [isVisible, setIsVisible] = useState(false);
-    const [popupActive, setPopupActive] = useState(0);
-    const popupList = ['популярности', 'цене', 'алфавиту'];
-    const popupActiveItem = popupList[popupActive];
+    const popupList = [
+        {
+            name: 'популярности(ASC)',
+            sortProperty: '-rating'
+        },
+        {
+            name: 'популярности(DESC)',
+            sortProperty: 'rating'
+        },
+        {
+            name: 'цене(ASC)',
+            sortProperty: '-price'
+        },
+        {
+            name: 'цене(DESC)',
+            sortProperty: 'price'
+        },
+        {
+            name: 'алфавиту(ASC)',
+            sortProperty: '-title'
+        },
+        {
+            name: 'алфавиту(DESC)',
+            sortProperty: 'title'
+        }
+    ];
 
     const onClickPopupList = (i) => {
-        setPopupActive(i);
+        onChangeSort(i);
         setIsVisible(false);
     }
 
@@ -28,7 +51,7 @@ const Sort = () => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setIsVisible(!isVisible)}>{popupActiveItem}</span>
+                <span onClick={() => setIsVisible(!isVisible)}>{value.name}</span>
             </div>
             {
                 isVisible && (
@@ -36,11 +59,12 @@ const Sort = () => {
                         <ul>
                             {
                                 popupList.map((popup, i) => (
-                                    <li className={popupActive === i ? 'active' : ''}
+                                    <li
+                                        className={value.sortProperty === popup.sortProperty ? 'active' : ''}
                                         key={i}
-                                        onClick={() => onClickPopupList(i)}
+                                        onClick={() => onClickPopupList(popup)}
                                     >
-                                        {popup}
+                                        {popup.name}
                                     </li>
                                 ))
                             }
