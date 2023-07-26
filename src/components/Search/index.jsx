@@ -1,8 +1,13 @@
 import styles from './Search.module.scss';
 import searchIcon from '../../assets/img/search-icon.svg';
 import clearIcon from '../../assets/img/clear-icon.svg';
+import {useContext} from "react";
+import {SearchContext} from "../../App";
 
-const Search = ({searchValue, setSearchValue}) => {
+const Search = () => {
+
+    const {searchValue, setSearchValue} = useContext(SearchContext);
+
     return (
         <div className={styles.root}>
             <img className={styles.icon} src={searchIcon} alt="search icon"/>

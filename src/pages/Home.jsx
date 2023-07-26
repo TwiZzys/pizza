@@ -1,11 +1,13 @@
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import Skeleton from "../components/PizzaBlock/Skeleton";
-import PizzaBlock from "../components/PizzaBlock";
-import {useEffect, useState} from "react";
+import Index from "../components/PizzaBlock";
+import {useContext, useEffect, useState} from "react";
 import Pagination from "../components/Pagination";
+import {SearchContext} from "../App";
 
-const Home = ({searchValue}) => {
+const Home = () => {
+    const {searchValue} = useContext(SearchContext);
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [categoryId, setCategoryId] = useState(0);
@@ -17,11 +19,11 @@ const Home = ({searchValue}) => {
     //С помощью js
     // const pizzas = items.filter(item => {
     //     return item.title.toLowerCase().includes(searchValue.toLowerCase());
-    // }).map(item => (<PizzaBlock key={item.id} {...item}/>));
+    // }).map(item => (<Index key={item.id} {...item}/>));
 
     //Через бекэнд
 
-    const pizzas = items.map(item => (<PizzaBlock key={item.id} {...item}/>));
+    const pizzas = items.map(item => (<Index key={item.id} {...item}/>));
     const skeletons = [...new Array(6)].map((_, i) => <Skeleton key={i}/>);
 
     useEffect(() => {
