@@ -1,37 +1,44 @@
 import {useState} from "react";
+import {useSelector, useDispatch} from "react-redux";
+import {setSort} from '../redux/slices/filterSlice'
 
-const Sort = ({value, onChangeSort}) => {
+
+const popupList = [
+    {
+        name: 'популярности(ASC)',
+        sortProperty: '-rating'
+    },
+    {
+        name: 'популярности(DESC)',
+        sortProperty: 'rating'
+    },
+    {
+        name: 'цене(ASC)',
+        sortProperty: '-price'
+    },
+    {
+        name: 'цене(DESC)',
+        sortProperty: 'price'
+    },
+    {
+        name: 'алфавиту(ASC)',
+        sortProperty: '-title'
+    },
+    {
+        name: 'алфавиту(DESC)',
+        sortProperty: 'title'
+    }
+];
+
+const Sort = () => {
+
+    const dispatch = useDispatch();
+    const sort = useSelector(state => state.filter.sort);
 
     const [isVisible, setIsVisible] = useState(false);
-    const popupList = [
-        {
-            name: 'популярности(ASC)',
-            sortProperty: '-rating'
-        },
-        {
-            name: 'популярности(DESC)',
-            sortProperty: 'rating'
-        },
-        {
-            name: 'цене(ASC)',
-            sortProperty: '-price'
-        },
-        {
-            name: 'цене(DESC)',
-            sortProperty: 'price'
-        },
-        {
-            name: 'алфавиту(ASC)',
-            sortProperty: '-title'
-        },
-        {
-            name: 'алфавиту(DESC)',
-            sortProperty: 'title'
-        }
-    ];
 
-    const onClickPopupList = (i) => {
-        onChangeSort(i);
+    const onClickPopupList = (obj) => {
+        dispatch(setSort(obj))
         setIsVisible(false);
     }
 
@@ -51,7 +58,7 @@ const Sort = ({value, onChangeSort}) => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setIsVisible(!isVisible)}>{value.name}</span>
+                <span onClick={() => setIsVisible(!isVisible)}>{sort.name}</span>
             </div>
             {
                 isVisible && (
@@ -60,7 +67,7 @@ const Sort = ({value, onChangeSort}) => {
                             {
                                 popupList.map((popup, i) => (
                                     <li
-                                        className={value.sortProperty === popup.sortProperty ? 'active' : ''}
+                                        className={sort.sortProperty === popup.sortProperty ? 'active' : ''}
                                         key={i}
                                         onClick={() => onClickPopupList(popup)}
                                     >
