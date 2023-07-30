@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from "react-redux";
 import {setSort} from '../redux/slices/filterSlice'
 
 
-const popupList = [
+export const popupList = [
     {
         name: 'популярности(ASC)',
         sortProperty: '-rating'
