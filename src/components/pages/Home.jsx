@@ -15,19 +15,21 @@ const Home = () => {
             }).then(json => {
             setItems(json);
             setIsLoading(false);
+            window.scrollTo(0, 0);
         });
     }, []);
-    return (<>
-        <div className="content__top">
-            <Categories/>
-            <Sort/>
-        </div>
-        <h2 className="content__title">Все пиццы</h2>
-        <div className="content__items">
-            {isLoading ? [...new Array(6)].map((_, i) => <Skeleton key={i}/>) : items.map(item => <PizzaBlock
-                key={item.id} {...item}/>)}
-        </div>
-    </>)
+    return (
+        <div className="container">
+            <div className="content__top">
+                <Categories/>
+                <Sort/>
+            </div>
+            <h2 className="content__title">Все пиццы</h2>
+            <div className="content__items">
+                {isLoading ? [...new Array(6)].map((_, i) => <Skeleton key={i}/>) : items.map(item => <PizzaBlock
+                    key={item.id} {...item}/>)}
+            </div>
+        </div>)
 }
 
 export default Home;

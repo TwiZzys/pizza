@@ -2,8 +2,10 @@
 
 .sort {
   position: relative;
+
   &__label {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
 
     svg {
@@ -19,6 +21,10 @@
       border-bottom: 1px dashed $orange;
       cursor: pointer;
     }
+
+    @media(max-width: 1300px) {
+      justify-content: center;
+    }
   }
 
   &__popup {
@@ -26,7 +32,7 @@
     right: 0;
     margin-top: 15px;
     background: #ffffff;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.09);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.09);
     border-radius: 10px;
     overflow: hidden;
     padding: 10px 0;
@@ -34,6 +40,7 @@
 
     ul {
       overflow: hidden;
+
       li {
         padding: 12px 20px;
         cursor: pointer;
@@ -48,6 +55,13 @@
           color: $orange;
         }
       }
+    }
+
+    @media(max-width: 1300px) {
+      left: 50%;
+    }
+    @media(max-width: 540px) {
+      transform: translateX(-50%);
     }
   }
 }
