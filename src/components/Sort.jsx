@@ -1,17 +1,36 @@
 import {useState} from "react";
 
-const Sort = () => {
+const Sort = ({value, onClickPopup}) => {
 
     const [open, setOpen] = useState(false);
-    const list = ['популярности', 'цене', 'алфавиту'];
-    const [activePopup, setActivePopup] = useState(0);
+    const list = [
+        {
+            name: 'Популярности(ASC)',
+            sortType: '-rating'
+        }, {
+            name: 'Популярности(DESC)',
+            sortType: 'rating'
+        },
+        {
+            name: 'Цене(ASC)',
+            sortType: '-price'
+        }, {
+            name: 'Цене(DESC)',
+            sortType: 'price'
+        },
+        {
+            name: 'Алфавиту(ASC)',
+            sortType: '-title'
+        }, {
+            name: 'Алфавиту(DESC)',
+            sortType: 'title'
+        },
+    ];
 
     const onClickActivePopup = (i) => {
-        setActivePopup(i);
+        onClickPopup(i);
         setOpen(false);
     }
-
-    const activePopupTitle = list[activePopup];
 
     return (
         <div className="sort">
@@ -29,7 +48,7 @@ const Sort = () => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setOpen(!open)}>{activePopupTitle}</span>
+                <span onClick={() => setOpen(!open)}>{value.name}</span>
             </div>
             {
                 open && (
@@ -38,8 +57,8 @@ const Sort = () => {
                             {
                                 list.map((item, i) => (
                                     <li key={i}
-                                        className={activePopup === i ? 'active' : ''}
-                                        onClick={() => onClickActivePopup(i)}>{item}</li>
+                                        className={value.sortType === item.sortType ? 'active' : ''}
+                                        onClick={() => onClickActivePopup(item)}>{item.name}</li>
                                 ))
                             }
                         </ul>

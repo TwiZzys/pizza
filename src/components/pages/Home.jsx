@@ -7,9 +7,20 @@ import PizzaBlock from "../PizzaBlock";
 const Home = () => {
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [activeCategory, setActiveCategory] = useState(1);
+    const [activePopup, setActivePopup] = useState({
+        name: 'Популярности(ASC)',
+        sortType: '-rating'
+    });
 
     useEffect(() => {
-        fetch('https://64a05b77ed3c41bdd7a73d72.mockapi.io/pizza')
+        setIsLoading(true);
+
+        const order = activePopup.sortType.includes('-') ? 'asc' : 'desc';
+        const sortBy = activePopup.sortType.replace('-', '');
+        const category = activeCategory > 0 ? `category=${activeCategory}` : '';
+
+        fetch(`https://64a05b77ed3c41bdd7a73d72.mockapi.io/pizza?${category}&sortBy=${sortBy}&order=${order}`)
             .then(res => {
                 return res.json()
             }).then(json => {
@@ -17,12 +28,13 @@ const Home = () => {
             setIsLoading(false);
             window.scrollTo(0, 0);
         });
-    }, []);
+    }, [activeCategory, activePopup]);
+
     return (
         <div className="container">
             <div className="content__top">
-                <Categories/>
-                <Sort/>
+                <Categories value={activeCategory} onClickCategory={(i) => setActiveCategory(i)}/>
+                <Sort value={activePopup} onClickPopup={(i) => setActivePopup(i)}/>
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
