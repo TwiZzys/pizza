@@ -19,8 +19,9 @@ const Home = ({searchValue}) => {
         const order = activePopup.sortType.includes('-') ? 'asc' : 'desc';
         const sortBy = activePopup.sortType.replace('-', '');
         const category = activeCategory > 0 ? `category=${activeCategory}` : '';
+        const search = searchValue ? `&search=${searchValue}` : '';
 
-        fetch(`https://64a05b77ed3c41bdd7a73d72.mockapi.io/pizza?${category}&sortBy=${sortBy}&order=${order}`)
+        fetch(`https://64a05b77ed3c41bdd7a73d72.mockapi.io/pizza?${category}&sortBy=${sortBy}&order=${order}${search}`)
             .then(res => {
                 return res.json()
             }).then(json => {
@@ -28,7 +29,7 @@ const Home = ({searchValue}) => {
             setIsLoading(false);
             window.scrollTo(0, 0);
         });
-    }, [activeCategory, activePopup]);
+    }, [activeCategory, activePopup, searchValue]);
 
     return (
         <div className="container">
@@ -39,9 +40,7 @@ const Home = ({searchValue}) => {
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
                 {isLoading ? [...new Array(6)].map((_, i) => <Skeleton key={i}/>) :
-                    items.filter(item => {
-                        return item.title.toLowerCase().includes(searchValue.toLowerCase());
-                    }).map(item => <PizzaBlock key={item.id} {...item}/>)
+                    items.map(item => <PizzaBlock key={item.id} {...item}/>)
                 }
             </div>
         </div>)
