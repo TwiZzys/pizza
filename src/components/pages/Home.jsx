@@ -1,13 +1,17 @@
+import ReactPaginate from "react-paginate";
+
 import Categories from "../Categories";
 import Sort from "../Sort";
 import {useEffect, useState} from "react";
 import Skeleton from "../PizzaBlock/Skeleton";
 import PizzaBlock from "../PizzaBlock";
+import Pagination from "../Pagination";
 
 const Home = ({searchValue}) => {
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [activeCategory, setActiveCategory] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
     const [activePopup, setActivePopup] = useState({
         name: 'Популярности(ASC)',
         sortType: '-rating'
@@ -21,7 +25,7 @@ const Home = ({searchValue}) => {
         const category = activeCategory > 0 ? `category=${activeCategory}` : '';
         const search = searchValue ? `&search=${searchValue}` : '';
 
-        fetch(`https://64a05b77ed3c41bdd7a73d72.mockapi.io/pizza?${category}&sortBy=${sortBy}&order=${order}${search}`)
+        fetch(`https://64a05b77ed3c41bdd7a73d72.mockapi.io/pizza?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
             .then(res => {
                 return res.json()
             }).then(json => {
@@ -29,7 +33,7 @@ const Home = ({searchValue}) => {
             setIsLoading(false);
             window.scrollTo(0, 0);
         });
-    }, [activeCategory, activePopup, searchValue]);
+    }, [activeCategory, activePopup, searchValue, currentPage]);
 
     return (
         <div className="container">
@@ -43,6 +47,7 @@ const Home = ({searchValue}) => {
                     items.map(item => <PizzaBlock key={item.id} {...item}/>)
                 }
             </div>
+            <Pagination onChangePage={number => setCurrentPage(number)}/>
         </div>)
 }
 
