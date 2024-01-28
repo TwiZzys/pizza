@@ -4,10 +4,10 @@ import {useEffect, useState} from "react";
 import Skeleton from "../PizzaBlock/Skeleton";
 import PizzaBlock from "../PizzaBlock";
 
-const Home = () => {
+const Home = ({searchValue}) => {
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [activeCategory, setActiveCategory] = useState(1);
+    const [activeCategory, setActiveCategory] = useState(0);
     const [activePopup, setActivePopup] = useState({
         name: 'Популярности(ASC)',
         sortType: '-rating'
@@ -38,8 +38,11 @@ const Home = () => {
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
-                {isLoading ? [...new Array(6)].map((_, i) => <Skeleton key={i}/>) : items.map(item => <PizzaBlock
-                    key={item.id} {...item}/>)}
+                {isLoading ? [...new Array(6)].map((_, i) => <Skeleton key={i}/>) :
+                    items.filter(item => {
+                        return item.title.toLowerCase().includes(searchValue.toLowerCase());
+                    }).map(item => <PizzaBlock key={item.id} {...item}/>)
+                }
             </div>
         </div>)
 }
