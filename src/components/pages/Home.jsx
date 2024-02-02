@@ -6,19 +6,23 @@ import PizzaBlock from "../PizzaBlock";
 import Pagination from "../Pagination";
 import {SearchContext} from "../../App";
 import {useDispatch, useSelector} from "react-redux";
-import {setCategoryID} from "../../redux/slices/filterSlice";
+import {setCategoryID, setCurrentPage} from "../../redux/slices/filterSlice";
+import axios from "axios";
 
 const Home = () => {
-    const {categoryID, sort} = useSelector(state => state.filter);
+    const {categoryID, sort, currentPage} = useSelector(state => state.filter);
     const sortType = sort.sortType;
     const dispatch = useDispatch();
     const {searchValue} = useContext(SearchContext);
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
 
     const onChangeCategory = (id) => {
         dispatch(setCategoryID(id));
+    }
+
+    const onChangePage = (num) => {
+      dispatch(setCurrentPage(num));
     }
 
     useEffect(() => {
@@ -29,14 +33,13 @@ const Home = () => {
         const category = categoryID > 0 ? `category=${categoryID}` : '';
         const search = searchValue ? `&search=${searchValue}` : '';
 
-        fetch(`https://64a05b77ed3c41bdd7a73d72.mockapi.io/pizza?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
+        axios.get(`https://64a05b77ed3c41bdd7a73d72.mockapi.io/pizza?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`)
             .then(res => {
-                return res.json()
-            }).then(json => {
-            setItems(json);
-            setIsLoading(false);
+                setItems(res.data);
+                setIsLoading(false);
+            });
+
             window.scrollTo(0, 0);
-        });
     }, [categoryID, sortType, searchValue, currentPage]);
 
     return (
@@ -51,7 +54,7 @@ const Home = () => {
                     items.map(item => <PizzaBlock key={item.id} {...item}/>)
                 }
             </div>
-            <Pagination onChangePage={number => setCurrentPage(number)}/>
+            <Pagination currentPage={currentPage} onChangePage={onChangePage}/>
         </div>)
 }
 
