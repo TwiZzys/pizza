@@ -1,10 +1,9 @@
 import Categories from "../Categories";
 import Sort from "../Sort";
-import {useContext, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import Skeleton from "../PizzaBlock/Skeleton";
 import PizzaBlock from "../PizzaBlock";
 import Pagination from "../Pagination";
-import {SearchContext} from "../../App";
 import {useDispatch, useSelector} from "react-redux";
 import {setCategoryID, setCurrentPage} from "../../redux/slices/filterSlice";
 import axios from "axios";
@@ -13,7 +12,7 @@ const Home = () => {
     const {categoryID, sort, currentPage} = useSelector(state => state.filter);
     const sortType = sort.sortType;
     const dispatch = useDispatch();
-    const {searchValue} = useContext(SearchContext);
+    const {searchValue} = useSelector(state => state.search);
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -22,7 +21,7 @@ const Home = () => {
     }
 
     const onChangePage = (num) => {
-      dispatch(setCurrentPage(num));
+        dispatch(setCurrentPage(num));
     }
 
     useEffect(() => {
@@ -39,7 +38,7 @@ const Home = () => {
                 setIsLoading(false);
             });
 
-            window.scrollTo(0, 0);
+        window.scrollTo(0, 0);
     }, [categoryID, sortType, searchValue, currentPage]);
 
     return (
