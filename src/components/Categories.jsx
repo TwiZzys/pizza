@@ -1,6 +1,4 @@
-import {useState} from "react";
-
-const Categories = ({value, onClickCategory}) => {
+const Categories = ({value, onChangeCategory}) => {
     const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 
     return (<div className="categories">
@@ -8,7 +6,7 @@ const Categories = ({value, onClickCategory}) => {
             {
                 categories.map((item, i) => (
                     <li onClick={() => {
-                        onClickCategory(i);
+                        onChangeCategory(i);
                     }}
                         className={value === i ? 'active' : ''}
                         key={i}>

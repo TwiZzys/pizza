@@ -1,34 +1,40 @@
 import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {setSort} from "../redux/slices/filterSlice";
 
-const Sort = ({value, onClickPopup}) => {
+
+const list = [
+    {
+        name: 'Популярности(ASC)',
+        sortType: '-rating'
+    }, {
+        name: 'Популярности(DESC)',
+        sortType: 'rating'
+    },
+    {
+        name: 'Цене(ASC)',
+        sortType: '-price'
+    }, {
+        name: 'Цене(DESC)',
+        sortType: 'price'
+    },
+    {
+        name: 'Алфавиту(ASC)',
+        sortType: '-title'
+    }, {
+        name: 'Алфавиту(DESC)',
+        sortType: 'title'
+    },
+];
+const Sort = () => {
+
+    const dispatch = useDispatch();
+    const sort = useSelector(state => state.filter.sort);
 
     const [open, setOpen] = useState(false);
-    const list = [
-        {
-            name: 'Популярности(ASC)',
-            sortType: '-rating'
-        }, {
-            name: 'Популярности(DESC)',
-            sortType: 'rating'
-        },
-        {
-            name: 'Цене(ASC)',
-            sortType: '-price'
-        }, {
-            name: 'Цене(DESC)',
-            sortType: 'price'
-        },
-        {
-            name: 'Алфавиту(ASC)',
-            sortType: '-title'
-        }, {
-            name: 'Алфавиту(DESC)',
-            sortType: 'title'
-        },
-    ];
 
     const onClickActivePopup = (i) => {
-        onClickPopup(i);
+        dispatch(setSort(i));
         setOpen(false);
     }
 
@@ -48,7 +54,7 @@ const Sort = ({value, onClickPopup}) => {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span onClick={() => setOpen(!open)}>{value.name}</span>
+                <span onClick={() => setOpen(!open)}>{sort.name}</span>
             </div>
             {
                 open && (
@@ -57,7 +63,7 @@ const Sort = ({value, onClickPopup}) => {
                             {
                                 list.map((item, i) => (
                                     <li key={i}
-                                        className={value.sortType === item.sortType ? 'active' : ''}
+                                        className={sort.sortType === item.sortType ? 'active' : ''}
                                         onClick={() => onClickActivePopup(item)}>{item.name}</li>
                                 ))
                             }
