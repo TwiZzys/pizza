@@ -1,17 +1,23 @@
 import Categories from "../Categories";
-import Sort from "../Sort";
-import {useEffect, useState} from "react";
+import Sort, {list} from "../Sort";
+import {useEffect, useRef, useState} from "react";
 import Skeleton from "../PizzaBlock/Skeleton";
 import PizzaBlock from "../PizzaBlock";
 import Pagination from "../Pagination";
 import {useDispatch, useSelector} from "react-redux";
-import {setCategoryID, setCurrentPage} from "../../redux/slices/filterSlice";
+import {setCategoryID, setCurrentPage, setFilters} from "../../redux/slices/filterSlice";
 import axios from "axios";
+import qs from "qs";
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const isSearch = useRef(false);
+    const isMounted = useRef(false);
+
     const {categoryID, sort, currentPage} = useSelector(state => state.filter);
     const sortType = sort.sortType;
-    const dispatch = useDispatch();
     const {searchValue} = useSelector(state => state.search);
     const [items, setItems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +30,7 @@ const Home = () => {
         dispatch(setCurrentPage(num));
     }
 
-    useEffect(() => {
+    const fetchPizzas = () => {
         setIsLoading(true);
 
         const order = sortType.includes('-') ? 'asc' : 'desc';
@@ -39,7 +45,49 @@ const Home = () => {
             });
 
         window.scrollTo(0, 0);
+    }
+
+    useEffect(() => {
+        if (window.location.search) {
+            const params = qs.parse(window.location.search.substring(1));
+
+            const sort = list.find(item => item.sortType === params.sortType);
+
+            dispatch(
+                setFilters({
+                    ...params,
+                    sort,
+
+                })
+            );
+            isSearch.current = true;
+        }
+    }, []);
+
+    useEffect(() => {
+
+        if (!isSearch.current) {
+            fetchPizzas()
+        }
+
+        isSearch.current = false;
+
     }, [categoryID, sortType, searchValue, currentPage]);
+
+
+    useEffect(() => {
+        if (isMounted.current) {
+            const queryStr = qs.stringify({
+                sortType: sort.sortType,
+                categoryID,
+                currentPage
+            });
+
+            navigate(`?${queryStr}`);
+        }
+        isMounted.current = true;
+    }, [categoryID, sortType, currentPage]);
+
 
     return (
         <div className="container">
