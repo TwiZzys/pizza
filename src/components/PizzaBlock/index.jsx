@@ -1,9 +1,25 @@
 import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {addItem} from '../../redux/slices/cartSlice';
 
-const Index = ({price, title, imageUrl, sizes, types}) => {
+const PizzaBlock = ({id, price, title, imageUrl, sizes, types}) => {
     const [activeType, setActiveType] = useState(0);
     const [activeSize, setActiveSize] = useState(0);
-    const typeNames = ['тонкое', 'традиционное']
+    const typeNames = ['тонкое', 'традиционное'];
+    const dispatch = useDispatch();
+    const cartItem = useSelector(state => state.cart.items.find(item => item.id === id));
+    const addedCount = cartItem ? cartItem.count : 0;
+    const onClickAdd = () => {
+        const item = {
+            id,
+            title,
+            price,
+            imageUrl,
+            type: typeNames[activeType],
+            size: sizes[activeSize]
+        };
+        dispatch(addItem(item));
+    }
 
     return (
         <div className="pizza-block">
@@ -16,10 +32,10 @@ const Index = ({price, title, imageUrl, sizes, types}) => {
             <div className="pizza-block__selector">
                 <ul>
                     {
-                        types.map((type, i) => (
-                            <li className={activeType === i ? 'active' : ''}
-                                onClick={() => setActiveType(i)}
-                                key={i}>
+                        types.map((type) => (
+                            <li key={type}
+                                onClick={() => setActiveType(type)}
+                                className={activeType === type ? 'active' : ''}>
                                 {typeNames[type]}
                             </li>
                         ))
@@ -39,7 +55,7 @@ const Index = ({price, title, imageUrl, sizes, types}) => {
             </div>
             <div className="pizza-block__bottom">
                 <div className="pizza-block__price">от {price} ₽</div>
-                <button className="button button--outline button--add">
+                <button onClick={onClickAdd} className="button button--outline button--add">
                     <svg
                         width="12"
                         height="12"
@@ -53,11 +69,11 @@ const Index = ({price, title, imageUrl, sizes, types}) => {
                         />
                     </svg>
                     <span>Добавить</span>
-                    <i>0</i>
+                    {addedCount > 0 && <i>{addedCount}</i>}
                 </button>
             </div>
         </div>
     );
 }
 
-export default Index;
+export default PizzaBlock;
