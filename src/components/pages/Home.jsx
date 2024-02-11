@@ -1,13 +1,13 @@
 import Categories from "../Categories";
 import Sort, {list} from "../Sort";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
 import Skeleton from "../PizzaBlock/Skeleton";
 import PizzaBlock from "../PizzaBlock";
 import Pagination from "../Pagination";
 import {useDispatch, useSelector} from "react-redux";
 import {filterSelector, setCategoryID, setCurrentPage, setFilters} from "../../redux/slices/filterSlice";
 import qs from "qs";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {fetchPizzas, pizzaSelector} from "../../redux/slices/pizzaSlice";
 import {searchSelector} from "../../redux/slices/searchSlice";
 
@@ -111,7 +111,9 @@ const Home = () => {
                     :
                     <div className="content__items">
                         {status === 'loading' ? [...new Array(6)].map((_, i) => <Skeleton key={i}/>) :
-                            items.map(item => <PizzaBlock key={item.id} {...item}/>)
+                            items.map(item => <Link to={`/pizza/${item.id}`} key={item.id}>
+                                <PizzaBlock {...item}/>
+                            </Link>)
                         }
                     </div>
             }
