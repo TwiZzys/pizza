@@ -1,6 +1,5 @@
 import {useDispatch} from "react-redux";
 import {addItem, removeItem, removeItemCart} from "../redux/slices/cartSlice";
-import CartEmpty from "./CartEmpty";
 
 const cartItem = ({id, title, price, type, size, count, imageUrl}) => {
 

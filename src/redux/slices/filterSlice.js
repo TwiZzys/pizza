@@ -30,6 +30,9 @@ export const filterSlice = createSlice({
     }
 })
 
+
+export const sortSelector = state => state.filter.sort;
+export const filterSelector = state => state.filter;
 // Action creators are generated for each case reducer function
 export const {setCategoryID, setSort, setCurrentPage, setFilters} = filterSlice.actions
 
