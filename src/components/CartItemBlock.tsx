@@ -1,4 +1,4 @@
-import {addItem, removeItem, removeItemCart} from "../redux/slices/cartSlice";
+import {addItem, CartItem, removeItem, removeItemCart} from "../redux/slices/cartSlice";
 import {FC} from "react";
 import {useAppDispatch} from "../redux/store";
 
@@ -12,13 +12,15 @@ type CartItemProps = {
     count: number,
     imageUrl: string
 };
-const CartItem:FC<CartItemProps> = ({id, title, price, type, size, count, imageUrl}) => {
+const CartItemBlock: FC<CartItemProps> = ({id, title, price, type, size, count, imageUrl}) => {
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const dispatch = useAppDispatch();
 
     const onClickPlus = () => {
-      dispatch(addItem({id} as CartItemProps);
+        dispatch(addItem({
+            id
+        } as CartItem));
     }
     const onClickMinus = () => {
         dispatch(removeItemCart(id));
@@ -89,4 +91,4 @@ const CartItem:FC<CartItemProps> = ({id, title, price, type, size, count, imageU
     )
 }
 
-export default CartItem;
+export default CartItemBlock;
