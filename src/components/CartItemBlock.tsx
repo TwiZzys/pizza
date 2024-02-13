@@ -1,13 +1,24 @@
-import {useDispatch} from "react-redux";
 import {addItem, removeItem, removeItemCart} from "../redux/slices/cartSlice";
+import {FC} from "react";
+import {useAppDispatch} from "../redux/store";
 
-const cartItem = ({id, title, price, type, size, count, imageUrl}) => {
+
+type CartItemProps = {
+    id: string,
+    title: string,
+    price: number,
+    type: string,
+    size: number,
+    count: number,
+    imageUrl: string
+};
+const CartItem:FC<CartItemProps> = ({id, title, price, type, size, count, imageUrl}) => {
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const onClickPlus = () => {
-      dispatch(addItem({id}));
+      dispatch(addItem({id} as CartItemProps);
     }
     const onClickMinus = () => {
         dispatch(removeItemCart(id));
@@ -78,4 +89,4 @@ const cartItem = ({id, title, price, type, size, count, imageUrl}) => {
     )
 }
 
-export default cartItem;
+export default CartItem;

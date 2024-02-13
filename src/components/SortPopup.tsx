@@ -1,39 +1,47 @@
-import {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {setSort, sortSelector} from "../redux/slices/filterSlice";
+import {FC, useState} from "react";
+import {useSelector} from "react-redux";
+import {setSort, Sort, sortSelector} from "../redux/slices/filterSlice";
+import {useAppDispatch} from "../redux/store";
 
 
-export const list = [
+type SortItem = {
+    name: string;
+    sortType: Sort;
+}
+export const list: SortItem[] = [
     {
         name: 'Популярности(ASC)',
         sortType: '-rating'
-    }, {
+    },
+    {
         name: 'Популярности(DESC)',
         sortType: 'rating'
     },
     {
         name: 'Цене(ASC)',
         sortType: '-price'
-    }, {
+    },
+    {
         name: 'Цене(DESC)',
         sortType: 'price'
     },
     {
         name: 'Алфавиту(ASC)',
         sortType: '-title'
-    }, {
+    },
+    {
         name: 'Алфавиту(DESC)',
-        sortType: 'title'
+        sortType: '-title'
     },
 ];
-const Sort = () => {
+const Sort:FC = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const sort = useSelector(sortSelector);
 
     const [open, setOpen] = useState(false);
 
-    const onClickActivePopup = (i) => {
+    const onClickActivePopup = (i:SortItem) => {
         dispatch(setSort(i));
         setOpen(false);
     }
