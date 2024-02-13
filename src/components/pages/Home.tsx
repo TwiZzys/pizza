@@ -1,6 +1,6 @@
 import Categories from "../Categories";
-import SortPopup, {list} from "../SortPopup";
-import {FC, useEffect, useRef} from "react";
+import SortPopup, {list} from "../Sort";
+import {FC, useCallback, useEffect, useRef} from "react";
 import Skeleton from "../PizzaBlock/Skeleton";
 import PizzaBlock from "../PizzaBlock";
 import Pagination from "../Pagination";
@@ -23,9 +23,9 @@ const Home: FC = () => {
     const sortType = sort.sortType;
     const {searchValue} = useSelector(searchSelector);
 
-    const onChangeCategory = (idx: number) => {
+    const onChangeCategory = useCallback((idx: number) => {
         dispatch(setCategoryID(idx));
-    }
+    }, [])
 
     const onChangePage = (page: number) => {
         dispatch(setCurrentPage(page));
@@ -93,7 +93,7 @@ const Home: FC = () => {
         <div className="container">
             <div className="content__top">
                 <Categories value={categoryID} onChangeCategory={onChangeCategory}/>
-                <SortPopup/>
+                <SortPopup value={sort}/>
             </div>
             <h2 className="content__title">Все пиццы</h2>
             {
@@ -110,7 +110,7 @@ const Home: FC = () => {
                     :
                     <div className="content__items">
                         {status === 'loading' ? [...new Array(6)].map((_, i) => <Skeleton key={i}/>) :
-                            items.map((item: any) => <PizzaBlock {...item}/>)
+                            items.map((item: any) => <PizzaBlock key={item.id} {...item}/>)
                         }
                     </div>
             }
