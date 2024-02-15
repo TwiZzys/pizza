@@ -1,9 +1,5 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {RootState} from "../store";
-
-interface SearchSliceState {
-    searchValue: string
-}
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {SearchSliceState} from "./types";
 
 const initialState: SearchSliceState = {
     searchValue: ''
@@ -19,7 +15,6 @@ export const searchSlice = createSlice({
     }
 })
 
-export const searchSelector = (state: RootState) => state.search;
 export const {setSearchValue} = searchSlice.actions
 
 export default searchSlice.reducer

@@ -1,6 +1,7 @@
-import {addItem, CartItem, removeItem, removeItemCart} from "../redux/slices/cartSlice";
 import {FC} from "react";
 import {useAppDispatch} from "../redux/store";
+import {addItem, removeItem, removeItemCart} from "../redux/cart/slice";
+import {CartItem} from "../redux/cart/types";
 
 
 type CartItemProps = {
